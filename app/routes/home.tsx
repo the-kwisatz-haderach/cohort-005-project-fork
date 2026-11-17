@@ -270,7 +270,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             <Button
               asChild
               size="lg"
-              className="bg-brand text-brand-foreground hover:bg-brand/90"
+              className="bg-brand text-brand-foreground hover:bg-brand hover:brightness-90"
             >
               <Link to="/courses">
                 Browse Courses
