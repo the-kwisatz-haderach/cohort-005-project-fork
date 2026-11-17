@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { hasUnsavedChanges, noteLength } from "../index";
+import { hasUnsavedChanges, noteLength, visibleSaveError } from "../index";
 
 describe("noteLength", () => {
   it("counts the draft against the allowance", () => {
@@ -52,5 +52,21 @@ describe("hasUnsavedChanges", () => {
 
   it("treats a draft with no saved note as a change", () => {
     expect(hasUnsavedChanges("x", undefined)).toBe(true);
+  });
+});
+
+describe("visibleSaveError", () => {
+  it("shows the error while the draft is the one that was sent", () => {
+    expect(visibleSaveError("too long", "too long", "Too long")).toBe(
+      "Too long"
+    );
+  });
+
+  it("hides the error once the draft has been edited", () => {
+    expect(visibleSaveError("shorter", "too long", "Too long")).toBeUndefined();
+  });
+
+  it("shows nothing before anything was sent", () => {
+    expect(visibleSaveError("", null, undefined)).toBeUndefined();
   });
 });

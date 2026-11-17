@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Textarea } from "~/components/ui/textarea";
 import { cn, formatRelativeTime } from "~/lib/utils";
-import { hasUnsavedChanges, noteLength } from "./index";
+import { hasUnsavedChanges, noteLength, visibleSaveError } from "./index";
 
 /** The Student's private note on a lesson, posted as the `save-note` intent. */
 export function LessonNote({
@@ -17,9 +17,7 @@ export function LessonNote({
   const [draft, setDraft] = useState(note?.body ?? "");
   const [submittedDraft, setSubmittedDraft] = useState<string | null>(null);
   const isSaving = fetcher.state !== "idle";
-  // A rejection is about the draft that was sent; once the Student edits it,
-  // the message no longer describes what is in the box.
-  const error = draft === submittedDraft ? fetcher.data?.error : undefined;
+  const error = visibleSaveError(draft, submittedDraft, fetcher.data?.error);
   const unsaved = hasUnsavedChanges(draft, note?.body);
 
   return (
