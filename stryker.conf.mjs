@@ -27,6 +27,12 @@ const config = {
   // Each mutant costs more, but the result is reliable. The file list keeps
   // the number of mutants small, which is what makes the command quick.
   coverageAnalysis: "off",
+  // Every mutant on a touched line must be killed: one survivor fails the
+  // run. A mutant no test reaches counts as a survivor, so "no tests yet" is
+  // a failure, not a pass. A mutant that cannot be killed (an equivalent
+  // mutant) gets a reviewable comment on the line above it:
+  //   // Stryker disable next-line <Mutator>: <why it is equivalent>
+  thresholds: { high: 100, low: 100, break: 100 },
   // Incremental mode adds to the file list below; it does not replace it.
   // Each run is already small, so the usual cost of incremental mode, a slow
   // first run without a cache, does not apply. The gain: after you correct
