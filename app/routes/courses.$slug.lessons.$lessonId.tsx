@@ -463,8 +463,6 @@ export async function action({ params, request }: Route.ActionArgs) {
   throw data("Invalid action", { status: 400 });
 }
 
-export type LessonLoaderData = Route.ComponentProps["loaderData"];
-
 export default function LessonViewer({ loaderData }: Route.ComponentProps) {
   if (loaderData.view === "locked") {
     return <LockedLesson data={loaderData} />;

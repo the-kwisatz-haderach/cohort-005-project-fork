@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import type { Route } from "./+types/home";
 import { Button } from "~/components/ui/button";
 import {
@@ -17,6 +17,7 @@ import {
   User,
   Moon,
   Sun,
+  type LucideIcon,
 } from "lucide-react";
 import { CourseImage } from "~/components/course-image";
 import { DevUI } from "~/components/dev-ui";
@@ -162,6 +163,26 @@ export async function loader({ request }: Route.LoaderArgs) {
   };
 }
 
+function StatTile({
+  icon: Icon,
+  value,
+  label,
+}: {
+  icon: LucideIcon;
+  value: ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="text-center">
+      <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-lg bg-brand/15">
+        <Icon className="size-6 text-brand" />
+      </div>
+      <p className="text-2xl font-bold">{value}</p>
+      <p className="text-sm text-muted-foreground">{label}</p>
+    </div>
+  );
+}
+
 export default function Home({ loaderData }: Route.ComponentProps) {
   const {
     featuredCourses,
@@ -234,51 +255,49 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </div>
       </header>
 
-      <section className="mx-auto max-w-6xl px-6 py-24 text-center">
-        <h1 className="text-5xl font-bold tracking-tight sm:text-6xl">
-          Learn to code,
-          <br />
-          <span className="text-muted-foreground">at your own pace</span>
-        </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-          Structured courses built by experienced instructors. Track your
-          progress, take quizzes, and build real-world skills.
-        </p>
-        <div className="mt-10 flex items-center justify-center gap-4">
-          <Button asChild size="lg">
-            <Link to="/courses">
-              Browse Courses
-              <ArrowRight className="ml-2 size-4" />
-            </Link>
-          </Button>
+      <section className="bg-radial-[ellipse_at_top] from-brand/15 to-transparent to-70%">
+        <div className="mx-auto max-w-6xl px-6 py-24 text-center">
+          <h1 className="text-5xl font-bold tracking-tight sm:text-6xl">
+            Learn to code,
+            <br />
+            <span className="text-brand">at your own pace</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+            Structured courses built by experienced instructors. Track your
+            progress, take quizzes, and build real-world skills.
+          </p>
+          <div className="mt-10 flex items-center justify-center gap-4">
+            <Button
+              asChild
+              size="lg"
+              className="bg-brand text-brand-foreground hover:bg-brand hover:brightness-90"
+            >
+              <Link to="/courses">
+                Browse Courses
+                <ArrowRight className="ml-2 size-4" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 
       <section className="border-y border-border bg-muted/50 py-16">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 sm:grid-cols-3">
-          <div className="text-center">
-            <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-lg bg-primary/10">
-              <BookOpen className="size-6 text-primary" />
-            </div>
-            <p className="text-2xl font-bold">{totalCourses}</p>
-            <p className="text-sm text-muted-foreground">Available Courses</p>
-          </div>
-          <div className="text-center">
-            <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-lg bg-primary/10">
-              <GraduationCap className="size-6 text-primary" />
-            </div>
-            <p className="text-2xl font-bold">{totalCategories}</p>
-            <p className="text-sm text-muted-foreground">Categories</p>
-          </div>
-          <div className="text-center">
-            <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-lg bg-primary/10">
-              <Users className="size-6 text-primary" />
-            </div>
-            <p className="text-2xl font-bold">Self-paced</p>
-            <p className="text-sm text-muted-foreground">
-              Learn on your schedule
-            </p>
-          </div>
+          <StatTile
+            icon={BookOpen}
+            value={totalCourses}
+            label="Available Courses"
+          />
+          <StatTile
+            icon={GraduationCap}
+            value={totalCategories}
+            label="Categories"
+          />
+          <StatTile
+            icon={Users}
+            value="Self-paced"
+            label="Learn on your schedule"
+          />
         </div>
       </section>
 
@@ -314,7 +333,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                     className="aspect-video w-full object-cover"
                   />
                   <CardHeader>
-                    <h3 className="font-semibold leading-snug group-hover:text-primary">
+                    <h3 className="font-semibold leading-snug group-hover:text-brand">
                       {course.title}
                     </h3>
                   </CardHeader>

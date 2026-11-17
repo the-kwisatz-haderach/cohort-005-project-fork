@@ -19,7 +19,7 @@ import { YouTubePlayer } from "~/components/youtube-player";
 import { LessonBreadcrumb } from "./lesson-breadcrumb";
 import { CurriculumSidebar } from "./curriculum-sidebar";
 import { QuizSection } from "./quiz-section";
-import type { LessonLoaderData } from "~/routes/courses.$slug.lessons.$lessonId";
+import type { FullLessonData } from "./lesson-data";
 
 export const AUTOPLAY_KEY = "cadence-autoplay";
 
@@ -49,11 +49,7 @@ export function useAutoplay() {
   return [enabled, toggle] as const;
 }
 
-export function FullLesson({
-  data,
-}: {
-  data: Extract<LessonLoaderData, { view: "full" }>;
-}) {
+export function FullLesson({ data }: { data: FullLessonData }) {
   const {
     course,
     curriculum,

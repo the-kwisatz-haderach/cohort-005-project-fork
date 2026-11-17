@@ -5,12 +5,12 @@ import { MapPin, ShieldAlert } from "lucide-react";
 import { countryName } from "~/lib/ppp";
 import { LessonBreadcrumb } from "./lesson-breadcrumb";
 import { CurriculumSidebar } from "./curriculum-sidebar";
-import type { LessonLoaderData } from "~/routes/courses.$slug.lessons.$lessonId";
+import type { LockedLessonData } from "./lesson-data";
 
 export function LockedLesson({
   data: { course, curriculum, module: mod, lesson, enrolled, lockedReason },
 }: {
-  data: Extract<LessonLoaderData, { view: "locked" }>;
+  data: LockedLessonData;
 }) {
   const purchasePath = `/courses/${course.slug}/purchase`;
 
