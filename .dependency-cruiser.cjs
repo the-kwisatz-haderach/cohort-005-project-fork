@@ -71,7 +71,13 @@ module.exports = {
         "No dependency cycles. Scope to `^${R}/` if you want to allow cycles outside packages.",
       severity: "error",
       from: {},
-      to: { circular: true },
+      // Type-only edges are erased at build time, so they make no runtime
+      // cycle. They are followed only for components-no-routes.
+      to: {
+        circular: true,
+        dependencyTypesNot: ["type-only"],
+        viaOnly: { dependencyTypesNot: ["type-only"] },
+      },
     },
 
     // --- Layering (optional, off by default) ----------------------------------
@@ -104,8 +110,19 @@ module.exports = {
         path: ["^app/db/index\\.ts$", "^node_modules/better-sqlite3/"],
       },
     },
+    {
+      name: "components-no-routes",
+      comment:
+        "Components are imported by routes, never the other way round. Type-only imports count: define a component's prop types next to the component (or in the module that owns the data), and have the route conform to them.",
+      severity: "error",
+      from: { path: "^app/components/" },
+      to: { path: "^app/routes/" },
+    },
   ],
   options: {
+    // Follow type-only imports too, so a component that imports a type from a
+    // route is caught.
+    tsPreCompilationDeps: true,
     doNotFollow: { path: "node_modules" },
     tsConfig: { fileName: "tsconfig.json" },
     enhancedResolveOptions: {
