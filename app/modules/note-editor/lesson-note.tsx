@@ -15,8 +15,11 @@ export function LessonNote({
 }) {
   const fetcher = useFetcher<{ ok: boolean; error?: string }>();
   const [draft, setDraft] = useState(note?.body ?? "");
+  const [submittedDraft, setSubmittedDraft] = useState<string | null>(null);
   const isSaving = fetcher.state !== "idle";
-  const error = fetcher.data?.error;
+  // A rejection is about the draft that was sent; once the Student edits it,
+  // the message no longer describes what is in the box.
+  const error = draft === submittedDraft ? fetcher.data?.error : undefined;
   const unsaved = hasUnsavedChanges(draft, note?.body);
 
   return (
@@ -29,7 +32,7 @@ export function LessonNote({
         />
       </NoteHeader>
 
-      <fetcher.Form method="post">
+      <fetcher.Form method="post" onSubmit={() => setSubmittedDraft(draft)}>
         <input type="hidden" name="intent" value="save-note" />
         <Textarea
           name="body"
